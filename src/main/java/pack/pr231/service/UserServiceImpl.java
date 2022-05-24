@@ -5,10 +5,8 @@ import org.springframework.stereotype.Controller;
 import pack.pr231.model.User;
 import pack.pr231.repository.UserRepository;
 
-import javax.servlet.Registration;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class UserServiceImpl implements UserService {
