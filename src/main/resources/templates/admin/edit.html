@@ -3,14 +3,14 @@
       xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Update user</title>
-    <link th:href="@{/styles/main.css}" rel="stylesheet" />
+    <title>edit user</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
 </head>
 <body>
 
 <div class="form-style-6">
 
-<form th:method="POST" th:action="@{/updated/{id}(id=${user.getId()})}" th:object="${user}">
+<form th:method="POST" th:action="@{/admin/edit/{id}(id=${user.getId()})}" th:object="${user}">
     <label for="nickname">Enter nickname: </label>
     <input type="text" th:field="*{nickname}" id="nickname"/>
     <br/>

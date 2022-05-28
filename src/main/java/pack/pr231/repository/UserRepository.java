@@ -10,10 +10,16 @@ import pack.pr231.model.User;
 import javax.transaction.Transactional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Integer> {
     @Modifying
     @Transactional
     @Query("update User u set u.email = :email, u.pts = :pts, u.nickname = :nickname where u.id = :id")
-    int update(@Param("id") Long id, @Param("email") String email, @Param("nickname") String nickname, @Param("pts") int pts);
+    int update(@Param("id") int id, @Param("email") String email, @Param("nickname") String nickname, @Param("pts") int pts);
+
+    @Transactional
+    User findUserByNickname(String nickname);
+
+
 }
+
 

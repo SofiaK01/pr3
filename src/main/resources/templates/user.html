@@ -4,11 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <title>User page</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
 </head>
+
 <body>
-<p th:text="${user.getNickname()}">VALUE</p>
-<p th:text="${user.getId()}">VALUE</p>
-<p th:text="${user.getPts()}">VALUE</p>
-<p th:text="${user.getEmail()}">VALUE</p>
+
+<table class="style-table" width="30%">
+    <tr>
+        <td>
+            Nickname
+        </td>
+        <td th:text="${user.getNickname()}">
+    </tr>
+    <tr>
+        <td>
+            Email
+        </td>
+        <td th:text="${user.getEmail()}">
+    </tr>
+    <tr>
+        <td>
+            Pts
+        </td>
+        <td th:text="${user.getPts()}">
+    </tr>
+</table>
+
+
+<a th:href="@{/logout}">Log out</a></td>
 </body>
 </html>

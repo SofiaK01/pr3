@@ -3,12 +3,12 @@
       xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>New person</title>
-    <link th:href="@{/styles/main.css}" rel="stylesheet" />
+    <title>new user</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
 </head>
 <body>
 <div class="form-style-6">
-<form th:method="POST" th:action="@{/create}" th:object="${user}">
+<form th:method="POST" th:action="@{/admin/new}" th:object="${user}">
 
     <label for="nickname">Enter nickname: </label>
     <input type="text" th:field="*{nickname}" id="nickname"/>
@@ -18,6 +18,9 @@
     <br/>
     <label for="pts">Enter pts: </label>
     <input type="text" th:field="*{pts}" id="pts"/>
+    <br/>
+    <label for="password">Enter password: </label>
+    <input type="password" th:field="*{password}" id="password"/>
     <br/>
     <input type="submit" value="Create!"/>
 </form>

@@ -3,15 +3,16 @@
       xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Update user</title>
-    <link th:href="@{/styles/main.css}" rel="stylesheet" />
+    <title>all users</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
 </head>
 <body>
+<a th:href="@{/logout}">Log out</a></td>
 <div th:switch="${users}">
     <h2 th:case="null">No users yet!</h2>
     <div th:case="*">
         <h2>Users</h2>
-        <table class="styled-table">
+        <table class="style-table" width=100%>
             <thead>
             <tr>
                 <th>Id</th>
@@ -28,13 +29,13 @@
                 <td th:text="${user.nickname}"></td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.pts}"></td>
-                <td><a th:href="@{/edit/{id}(id=${user.id})}">Edit</a></td>
-                <td><a th:href="@{/delete/{id}(id=${user.id})}">Delete</a></td>
+                <td><a th:href="@{/admin/edit/{id}(id=${user.id})}">Edit</a></td>
+                <td><a th:href="@{/admin/delete/{id}(id=${user.id})}">Delete</a></td>
             </tr>
             </tbody>
         </table>
     </div>
-    <p> <a class="button-56" href="/new">Add a new user</a>
+    <p> <a class="button-56" href="/admin/new">Add a new user</a>
 </div>
 </body>
 </html>
