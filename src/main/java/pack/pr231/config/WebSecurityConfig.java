@@ -49,6 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("nickname")
                 .successHandler(loginSuccessHandler)
                 .failureHandler(failureHandle)
+               // .defaultSuccessUrl("/user/",userService.findUserByNickname())
                 .and()
                 .logout()
                 .logoutUrl("/logout")

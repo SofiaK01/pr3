@@ -7,6 +7,7 @@
     <link th:href="@{/css/main.css}" rel="stylesheet" />
 </head>
 <body>
+<a th:href="@{/user-page}">user page</a></td>
 <a th:href="@{/logout}">Log out</a></td>
 <div th:switch="${users}">
     <h2 th:case="null">No users yet!</h2>

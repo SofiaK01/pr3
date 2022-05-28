@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:5px
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>user page</title>
+  <link th:href="@{/css/main.css}" rel="stylesheet" />
+</head>
+
+<body>
+
+<table class="style-table" width="30%">
+  <tr>
+    <td>
+      Nickname
+    </td>
+    <td sec:authentication="principal.nickname">
+  </tr>
+  <tr>
+    <td>
+      Email
+    </td>
+    <td sec:authentication="principal.email">
+  </tr>
+  <tr>
+    <td>
+      Pts
+    </td>
+    <td sec:authentication="principal.pts">
+  </tr>
+</table>
+
+
+<a th:href="@{/logout}">Log out</a></td>
+</body>
+</html>

@@ -14,10 +14,9 @@ public class MainController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/for-all")
-    public String showPageForEveryone(Model model) {
-        model.addAttribute(new User());
-        return "common";
+    @GetMapping("/user-page")
+    public String showUser() {
+        return "userPage";
     }
 
     @GetMapping("/start")
@@ -29,7 +28,6 @@ public class MainController {
     @PostMapping("/signup")
     public String createUser(@ModelAttribute("user") User user, Model model) {
         userService.add(user);
-        model.addAttribute("user", user);
         return "user";
     }
 
