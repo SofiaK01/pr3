@@ -31,14 +31,11 @@ public class MainController {
         return "user";
     }
 
-    @GetMapping("/admin/all-users")
-    public String showAllPeople(Model model) {
-        model.addAttribute("users", userService.listUsers());
-        return "admin/all-users";
-    }
 
     @GetMapping("/403")
     public String accessDenied() {
         return "403";
     }
+
 }
+

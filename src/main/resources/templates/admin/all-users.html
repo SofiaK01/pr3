@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>all users</title>
-    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
 </head>
 <body>
 <a th:href="@{/user-page}">user page</a></td>
@@ -20,8 +20,10 @@
                 <th>NickName</th>
                 <th>Email</th>
                 <th>PTS</th>
+                <th>Roles</th>
                 <th>Edit</th>
                 <th>Delete</th>
+
             </tr>
             </thead>
             <tbody>
@@ -30,13 +32,16 @@
                 <td th:text="${user.nickname}"></td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.pts}"></td>
+                <td th:text="${user.rolesToString()}">
                 <td><a th:href="@{/admin/edit/{id}(id=${user.id})}">Edit</a></td>
                 <td><a th:href="@{/admin/delete/{id}(id=${user.id})}">Delete</a></td>
+
             </tr>
             </tbody>
         </table>
     </div>
-    <p> <a class="button-56" href="/admin/new">Add a new user</a>
+    <p><a class="button-56" href="/admin/new">Add a new user</a>
 </div>
 </body>
 </html>
+

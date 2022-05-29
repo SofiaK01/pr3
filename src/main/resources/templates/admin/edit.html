@@ -20,6 +20,16 @@
     <label for="pts">Enter pts: </label>
     <input type="text" th:field="*{pts}" id="pts"/>
     <br/>
+    <label for="password">Enter password: </label>
+    <input type="text" th:field="*{password}" id="password"/>
+    <br/>
+    <input type="checkbox" id="role_user" name="role_user" value="on">
+    <label for="role_user">user</label>
+
+    <input type="checkbox" id="role_admin" name="role_admin" value="on">
+    <label for="role_admin">admin</label>
+
+    <br/>
     <input type="submit" value="Update!"/>
 </form>
 </div>>

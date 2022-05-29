@@ -39,13 +39,14 @@ public class UserService implements UserDetailsService {
 
         Set<Role> roles = new HashSet<>();
 
+
         Role ur_user = roleRepository.findRoleByName("ROLE_USER");
         roles.add(ur_user);
 
-        //in case we need new admin
 
-        /*ur_user = roleRepository.findRoleByName("ROLE_ADMIN");
-        roles.add(ur_user);*/
+        //in case we need new admin
+        ur_user = roleRepository.findRoleByName("ROLE_ADMIN");
+        roles.add(ur_user);
 
         user.setRoles(roles);
 
@@ -76,7 +77,8 @@ public class UserService implements UserDetailsService {
 
 
     public void updateUser(int id, User user) {
-        userRepository.update(id, user.getEmail(), user.getNickname(), user.getPts());
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
     }
 
     @Override
@@ -88,3 +90,4 @@ public class UserService implements UserDetailsService {
         return user;
     }
 }
+

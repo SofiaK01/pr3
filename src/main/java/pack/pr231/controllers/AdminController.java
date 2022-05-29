@@ -4,16 +4,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+import pack.pr231.model.Role;
 import pack.pr231.model.User;
+import pack.pr231.repository.RoleRepository;
 import pack.pr231.service.UserService;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
+
     @Autowired
     private UserService userService;
+    @Autowired
+    RoleRepository roleRepository;
 
-    @GetMapping("/all-user")
+    @GetMapping("/all-users")
     public String userList(Model model) {
         model.addAttribute("users", userService.listUsers());
         return "admin/all-users";
@@ -27,9 +38,20 @@ public class AdminController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") int id) {
+    public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") int id, WebRequest request) {
+        Set<Role> roles = new HashSet<>();
+
+        Role ur_user;
+        if (Objects.equals(request.getParameter("role_user"), "on")) {
+            ur_user = roleRepository.findRoleByName("ROLE_USER");
+            roles.add(ur_user);
+        }
+        if (Objects.equals(request.getParameter("role_admin"), "on")) {
+            ur_user = roleRepository.findRoleByName("ROLE_ADMIN");
+            roles.add(ur_user);
+        }
+        user.setRoles(roles);
         userService.updateUser(id, user);
-        System.out.println(user.getNickname());
         return "redirect:/admin/all-users";
     }
 

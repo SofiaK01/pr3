@@ -5,10 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -114,6 +111,24 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String rolesToString() {
+        Set<Role> roles = this.getRoles();
+        StringBuilder rez = new StringBuilder();
+
+        for (Role role : roles) {
+            if (Objects.equals(role.getName(), "ROLE_ADMIN")){
+                rez.append("ADMIN");
+                rez.append(" ");
+            }
+            if (Objects.equals(role.getName(), "ROLE_USER")){
+                rez.append("USER");
+                rez.append(" ");
+            }
+
+        }
+        return rez.toString();
     }
 
 }

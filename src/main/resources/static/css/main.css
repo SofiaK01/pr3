@@ -32,6 +32,8 @@ label { color: #009879;
 
 .style-table th,
 .style-table td {
+    word-break: break-all;
+    word-wrap: anywhere;
     padding: 12px 15px;
 }
 
