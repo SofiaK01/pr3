@@ -45,8 +45,8 @@ public class UserService implements UserDetailsService {
 
 
         //in case we need new admin
-        ur_user = roleRepository.findRoleByName("ROLE_ADMIN");
-        roles.add(ur_user);
+        /*ur_user = roleRepository.findRoleByName("ROLE_ADMIN");
+        roles.add(ur_user);*/
 
         user.setRoles(roles);
 
@@ -77,7 +77,9 @@ public class UserService implements UserDetailsService {
 
 
     public void updateUser(int id, User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        if (!this.findUserById(id).getPassword().equals(user.getPassword())) {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        }
         userRepository.save(user);
     }
 
