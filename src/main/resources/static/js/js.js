@@ -9,7 +9,7 @@ $(document).ready(function () {
             roles: getRole("#selectRole")
 
         }
-        fetch("user/newUser", {
+        fetch("user/${user.id}", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json;charset=utf-8"
@@ -39,7 +39,7 @@ function createTableRow(u) {
             <a  href="/user/${u.id}" idUser="${u.id}" rolesUser = "${arr}" ptsUser="${u.pts}" emailUser="${u.email}" passwordUser="${u.password}" nicknameUser="${u.username}"class="btn btn-info eBtn" >Edit</a>
             </td>
             <td>
-            <a  href="/user/delete/${u.id}" class="btn btn-danger delBtn">Delete</a>
+            <a  href="/user/${u.id}" class="btn btn-danger delBtn">Delete</a>
             </td>
         </tr>`;
 }
@@ -122,7 +122,7 @@ function delModalButton(href) {
 }
 
 function editModalButton(user) {
-    fetch("user/edit", {
+    fetch("/user/${user.id}", {
         method: "PUT",
         headers: {
             "Content-Type": "application/json;charset=utf-8"

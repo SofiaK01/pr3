@@ -29,14 +29,14 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @PostMapping("/newUser")
+    @PostMapping("/{id}")
     public ResponseEntity<String> save(@RequestBody User user) {
         userService.add(user);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
-    @PutMapping("/edit")
+    @PutMapping("/{id}")
     public ResponseEntity<String> update(@RequestBody User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userService.updateUser(user.getId(), user);
@@ -49,7 +49,7 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") int id) {
         userService.delete(id);
     }
