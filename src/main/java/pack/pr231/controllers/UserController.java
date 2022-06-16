@@ -1,61 +1,56 @@
 package pack.pr231.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 import pack.pr231.model.User;
 import pack.pr231.service.UserService;
 
-@Controller
+import java.util.List;
+
+@RestController
+@RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @GetMapping("/all-users")
-    public String showAllPeople(Model model) {
-        model.addAttribute("users", userService.listUsers());
-        return "all-users";
+    private final PasswordEncoder bCryptPasswordEncoder;
+
+    public UserController(UserService userService, PasswordEncoder bCryptPasswordEncoder) {
+        this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    @GetMapping("/user/{id}")
-    public String showPerson(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.findUser(id));
-        return "user";
+    @GetMapping("/all")
+    public ResponseEntity<List<User>> list() {
+        List<User> users = userService.listUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("/new")
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
-        return "new";
-    }
-
-    @PostMapping("/create")
-    public String createUser(@ModelAttribute("user") User user) {
+    @PostMapping("/newUser")
+    public ResponseEntity<String> save(@RequestBody User user) {
         userService.add(user);
-        return "redirect:/all-users";
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
-    @GetMapping("/edit/{id}")
-    public String editUser(@PathVariable("id") long id, Model model) {
-        User user = userService.findUser(id);
-        model.addAttribute("user", user);
-        return "edit";
+    @PutMapping("/edit")
+    public ResponseEntity<String> update(@RequestBody User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userService.updateUser(user.getId(), user);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/updated/{id}")
-    public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") long id) {
-        userService.updateUser(id, user);
-        return "redirect:/all-users";
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getOne(@PathVariable Integer id) {
+        User user = userService.findUserById(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") long id, Model model) {
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable("id") int id) {
         userService.delete(id);
-        return "redirect:/all-users";
     }
 }
