@@ -20,7 +20,7 @@ import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
-    Role userRole = new Role();
+
     @PersistenceContext
     private EntityManager em;
     @Autowired
@@ -36,25 +36,15 @@ public class UserService implements UserDetailsService {
 
     public void add(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-
         Set<Role> roles = new HashSet<>();
-
-
-        Role ur_user = roleRepository.findRoleByName("ROLE_USER");
-        roles.add(ur_user);
-
-
-        //in case we need new admin
-        /*ur_user = roleRepository.findRoleByName("ROLE_ADMIN");
-        roles.add(ur_user);*/
-
+        for (Role r : user.getRoles()) {
+            roles.add(roleRepository.findRoleByName(r.getName()));
+        }
         user.setRoles(roles);
-
         userRepository.save(user);
     }
 
     @Transactional
-
     public User findUserById(int id) {
         return userRepository.findById(id).get();
     }
@@ -70,16 +60,12 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-
     public List<User> listUsers() {
         return userRepository.findAll();
     }
 
 
     public void updateUser(int id, User user) {
-        if (!this.findUserById(id).getPassword().equals(user.getPassword())) {
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        }
         userRepository.save(user);
     }
 

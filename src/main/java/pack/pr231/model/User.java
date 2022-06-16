@@ -13,7 +13,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int id;
+    private Integer id;
     @Column(name = "nickname")
     private String nickname;
     @Column(name = "email")
@@ -23,16 +23,16 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -72,11 +72,9 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = this.getRoles();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
         for (Role role : roles) {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
-
         return authorities;
     }
 
@@ -131,11 +129,11 @@ public class User implements UserDetails {
         StringBuilder rez = new StringBuilder();
 
         for (Role role : roles) {
-            if (Objects.equals(role.getName(), "ROLE_ADMIN")){
+            if (Objects.equals(role.getName(), "ROLE_ADMIN")) {
                 rez.append("ADMIN");
                 rez.append(" ");
             }
-            if (Objects.equals(role.getName(), "ROLE_USER")){
+            if (Objects.equals(role.getName(), "ROLE_USER")) {
                 rez.append("USER");
                 rez.append(" ");
             }

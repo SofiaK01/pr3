@@ -22,15 +22,15 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication) throws IOException {
 
 
-
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
         if (roles.contains("ROLE_ADMIN")) {
             httpServletResponse.setStatus(HttpStatus.OK.value());
-            httpServletResponse.sendRedirect("/admin/all-users");
-
+            httpServletResponse.sendRedirect("/admin");
         } else if (roles.contains("ROLE_USER")) {
             httpServletResponse.setStatus(HttpStatus.OK.value());
-            httpServletResponse.sendRedirect("/user-page");
+            httpServletResponse.sendRedirect("/users");
+        } else {
+            httpServletResponse.sendRedirect("/login");
         }
     }
 }

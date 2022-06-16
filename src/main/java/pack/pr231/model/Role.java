@@ -1,5 +1,7 @@
 package pack.pr231.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -8,47 +10,27 @@ import java.util.Set;
 
 
 @Entity
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
     @Id
     @Column(name = "role_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
-
-    public Role() {
-    }
-
-    public Role(String name) {
-        this.name = name;
-    }
-
+    @Column(name = "name")
     private String name;
 
-    public Integer getId() {
-        return id;
-    }
+    @JsonIgnore
+    @ManyToMany(mappedBy = "roles")
+    @ToString.Exclude
+    private Set<User> users;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public Role(String role) {
+        this.name = role;
     }
 
     @Override
@@ -67,14 +49,5 @@ public class Role implements GrantedAuthority {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
-    }
-
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", users=" + users +
-                ", name='" + name + '\'' +
-                '}';
     }
 }
