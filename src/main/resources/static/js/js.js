@@ -101,6 +101,7 @@ document.addEventListener('click', function (event) {
             roles: getRole("#selectRoleEdit")
         }
         editModalButton(user)
+        location.reload();
     }
 
     if ($(event.target).hasClass('logout')) {

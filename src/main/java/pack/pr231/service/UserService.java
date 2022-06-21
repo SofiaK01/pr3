@@ -66,6 +66,12 @@ public class UserService implements UserDetailsService {
 
 
     public void updateUser(int id, User user) {
+
+        if (user.getPassword().isEmpty()){
+            user.setPassword(this.findUserById(id).getPassword());
+        } else if (!user.getPassword().equals(this.findUserById(id).getPassword())){
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        }
         userRepository.save(user);
     }
 
