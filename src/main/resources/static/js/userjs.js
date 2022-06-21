@@ -1,7 +1,7 @@
 $(document).ready(function () {
     let spans = document.getElementById('spans').getElementsByTagName('span');//returns node-list of spans
     let id = spans[0].innerText;
-    let url = "user/awaiting";
+    let url = "request/awaiting";
     fetch(url)
         .then((resp) => resp.json())
         .then(function (data) {
@@ -47,7 +47,6 @@ function editModalButton(url) {
         },
     })
 }
-
 
 
 function logout() {

@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pack.pr231.model.User;
 import pack.pr231.service.EmailService;
@@ -30,9 +28,6 @@ public class EmailController {
     private UserService userService;
     @Autowired
     private RightsRequestService rightsRequestService;
-
-    @Autowired
-    private PasswordEncoder bCryptPasswordEncoder;
 
     @PutMapping(value = "/admin-request/{id}")
     public @ResponseBody

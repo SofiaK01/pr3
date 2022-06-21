@@ -93,7 +93,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <button class="btn btn-info makeAbtn" type="button" data-toggle="collapse"
+                    <button sec:authorize="!hasRole('ROLE_ADMIN')" class="btn btn-info makeAbtn" type="button" data-toggle="collapse"
                             data-target="#navbarSupportedContent"
                             aria-controls="navbarSupportedContent" aria-expanded="false" id="makeAdmin">
                         хочу быть армянином ^^

@@ -3,12 +3,8 @@ package pack.pr231.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pack.pr231.model.User;
-import pack.pr231.service.RightsRequestService;
 import pack.pr231.service.UserService;
 
 import java.util.List;
@@ -19,14 +15,8 @@ public class UserController {
 
     private final UserService userService;
 
-    private final RightsRequestService rightsRequestService;
-
-    private final PasswordEncoder bCryptPasswordEncoder;
-
-    public UserController(UserService userService, PasswordEncoder bCryptPasswordEncoder, RightsRequestService rightsRequestService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.rightsRequestService = rightsRequestService;
     }
 
     @GetMapping("/all")
@@ -59,12 +49,6 @@ public class UserController {
         userService.delete(id);
     }
 
-    @GetMapping("/awaiting")
-    public ResponseEntity<Boolean> checkWaiting() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByNickname(authentication.getName());
-        System.out.println(rightsRequestService.checkById(user.getId()));
-        return new ResponseEntity<>(rightsRequestService.checkById(user.getId()), HttpStatus.OK);
-    }
+
 
 }

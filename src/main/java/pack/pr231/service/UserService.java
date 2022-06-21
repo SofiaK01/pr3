@@ -6,14 +6,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pack.pr231.model.RightsRequest;
 import pack.pr231.model.Role;
 import pack.pr231.model.User;
+import pack.pr231.repository.RightsRequestRepository;
 import pack.pr231.repository.RoleRepository;
 import pack.pr231.repository.UserRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,10 +33,12 @@ public class UserService implements UserDetailsService {
     RoleRepository roleRepository;
 
     @Autowired
+    RightsRequestRepository rightsRequestRepository;
+
+    @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
-
     public void add(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
@@ -64,12 +69,22 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    @Transactional
+    public List<User> listUsersAwaiting() {
+        List<RightsRequest> ids = rightsRequestRepository.findAll();
+        List<User> awaiting = new ArrayList<>();
+        for (RightsRequest request : ids) {
+            awaiting.add(this.findUserById(request.getUser_id()));
+        }
+
+        return awaiting;
+    }
 
     public void updateUser(int id, User user) {
 
-        if (user.getPassword().isEmpty()){
+        if (user.getPassword().isEmpty()) {
             user.setPassword(this.findUserById(id).getPassword());
-        } else if (!user.getPassword().equals(this.findUserById(id).getPassword())){
+        } else if (!user.getPassword().equals(this.findUserById(id).getPassword())) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         }
         userRepository.save(user);

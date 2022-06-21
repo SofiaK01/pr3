@@ -3,9 +3,7 @@ package pack.pr231.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pack.pr231.model.RightsRequest;
-import pack.pr231.model.User;
 import pack.pr231.repository.RightsRequestRepository;
-import pack.pr231.repository.UserRepository;
 
 import javax.transaction.Transactional;
 import java.util.Date;
@@ -20,14 +18,10 @@ public class RightsRequestService {
         rightsRequestRepository.save(request);
     }
     public Boolean checkById(Integer id) {
-
-        if (rightsRequestRepository.findById(id).equals(null)) {
-            return false;
-        }
-        return true;
+        return rightsRequestRepository.findById(id).isPresent();
     }
     @Transactional
-    public void delete(int id) {
+    public void delete(Integer id) {
         rightsRequestRepository.deleteById(id);
     }
 

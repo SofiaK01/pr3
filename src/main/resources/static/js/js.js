@@ -1,5 +1,6 @@
 $(document).ready(function () {
     restartAllUsers();
+    restartAllRequests();
     $('.AddBtn').on('click', function (event) {
         let user = {
             email: $("#email").val(),
@@ -61,6 +62,46 @@ function restartAllUsers() {
     });
 }
 
+function createRequestRow(u) {
+    let userRole = "";
+    let arr = [];
+    for (let i = 0; i < u.roles.length; i++) {
+        userRole += " " + u.roles[i].name;
+        arr.push(u.roles[i].name);
+    }
+    return `<tr id="user_table_row">
+            <td>${u.id}</td>
+            <td>${u.nickname}</td>
+            <td>${u.email}</td>
+            <td>${u.pts}</td>
+            <td>${u.password}</td>
+            <td>${userRole}</td>
+            <td>
+            <a  href="/user/${u.id}" idUser="${u.id}" rolesUser = "${arr}" ptsUser="${u.pts}" emailUser="${u.email}" passwordUser="${u.password}" nicknameUser="${u.username}"class="btn btn-info yesBtn" >Accept</a>
+            </td>
+            <td>
+            <a  href="/user/${u.id}" idUser="${u.id}" rolesUser = "${arr}" ptsUser="${u.pts}" emailUser="${u.email}" passwordUser="${u.password}" nicknameUser="${u.username}"class="btn btn-warning noBtn" >Reject</a>
+            </td>
+      
+        </tr>`;
+}
+
+function restartAllRequests() {
+    let UsersTableBody = $("#users_table_body")
+
+    UsersTableBody.children().remove();
+
+    fetch("request/all")
+        .then((response) => {
+            response.json().then(data => data.forEach(function (item, i, data) {
+                let TableRow = createRequestRow(item);
+                UsersTableBody.append(TableRow);
+            }));
+        }).catch(error => {
+        console.log(error);
+    });
+}
+
 function getRole(address) {
     let data = [];
     $(address).find("option:selected").each(function () {
@@ -72,6 +113,28 @@ function getRole(address) {
 
 document.addEventListener('click', function (event) {
     event.preventDefault()
+
+    if ($(event.target).hasClass('yesBtn')) {
+
+        let data = [];
+
+        data.push({id: 1, name: "ROLE_ADMIN", authority: "ROLE_ADMIN"})
+        data.push({id: 4, name: "ROLE_USER", authority: "ROLE_USER"})
+
+        let user = {
+            id: $(event.target).attr("idUser"),
+            email: $(event.target).attr("emailUser"),
+            nickname: $(event.target).attr("nicknameUser"),
+            pts: $(event.target).attr("ptsUser"),
+            roles: data
+        }
+        acceptUser(user)
+    }
+    if ($(event.target).hasClass('noBtn')) {
+        let href = "/request/"+$(event.target).attr("idUser");
+        rejectUser(href)
+    }
+
     if ($(event.target).hasClass('delBtn')) {
         let href = $(event.target).attr("href");
         delModalButton(href)
@@ -135,6 +198,35 @@ function editModalButton(user) {
         restartAllUsers();
     })
 }
+
+
+
+
+function acceptUser(user) {
+    fetch("/request/${user.id}", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8"
+        },
+        body: JSON.stringify(user)
+    }).then(function (response) {
+        $('input').val('');
+        restartAllRequests();
+        restartAllUsers();
+    })
+}
+function rejectUser(url) {
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8"
+        },
+    }).then(function (response) {
+        $('input').val('');
+        restartAllRequests();
+    })
+}
+
 
 function openTabById(tab) {
     $('.nav-tabs a[href="#' + tab + '"]').tab('show');
